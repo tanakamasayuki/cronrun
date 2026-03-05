@@ -1,6 +1,8 @@
 # Changelog / 変更履歴
 
 ## Unreleased
+
+## 1.0.1
 - (EN) Fixed SIGINT handling so running child processes can finish before exit.
 - (JA) SIGINT（Ctrl+C）時に実行中の子プロセス完了を待ってから終了するよう修正。
 - (EN) Changed README links to absolute GitHub URLs to avoid 404 on PyPI.

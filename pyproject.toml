@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cronrun"
-version = "1.0.0"
+version = "1.0.1"
 description = "Run commands with a cron expression or loop mode"
 readme = "README.md"
 license = "MIT"
