@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.build/
+build/
+dist/
+temp/
+
+# Virtual environments
+.venv/
+venv/
+
+# uv
+.uv/
+uv.lock
+
+# PyInstaller
+*.spec
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Cache
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# App outputs
+diff_report/

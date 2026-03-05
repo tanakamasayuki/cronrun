@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cronrun"
+version = "0.1.0"
+description = "Run commands with a cron expression or loop mode"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [
+    { name = "Tanaka Masayuki" },
+]
+keywords = ["cron", "scheduler", "cli", "pipx"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: System :: Monitoring",
+]
+dependencies = [
+    "croniter>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tanakamasayuki/cronrun"
+Repository = "https://github.com/tanakamasayuki/cronrun"
+Issues = "https://github.com/tanakamasayuki/cronrun/issues"
+
+[project.scripts]
+cronrun = "cronrun.__main__:main"
+
