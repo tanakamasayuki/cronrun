@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.2.1
+- (no changes)
+
 ## 0.2.0
 - (EN) Initial release
 - (JA) 初期リリース
