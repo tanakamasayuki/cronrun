@@ -1,7 +1,7 @@
 # cronrun
 
-[日本語版 README](README.ja.md)
-[Specification](SPEC.md)
+[日本語版 README](https://github.com/tanakamasayuki/cronrun/blob/main/README.ja.md)
+[Specification](https://github.com/tanakamasayuki/cronrun/blob/main/SPEC.md)
 
 `cronrun` is a CLI tool to run commands in either:
 

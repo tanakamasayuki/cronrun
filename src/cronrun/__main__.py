@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shlex
 import signal
 import subprocess
@@ -80,8 +81,17 @@ def run_process(
     *,
     shell: bool,
 ) -> None:
+    popen_kwargs: dict[str, object] = {"shell": shell}
+    if os.name == "nt":
+        create_new_group = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+        if create_new_group:
+            popen_kwargs["creationflags"] = create_new_group
+    else:
+        # Isolate child from terminal SIGINT (Ctrl+C) sent to parent process group.
+        popen_kwargs["start_new_session"] = True
+
     proc: subprocess.Popen[str] | subprocess.Popen[bytes]
-    proc = subprocess.Popen(cmd, shell=shell)  # noqa: S602
+    proc = subprocess.Popen(cmd, **popen_kwargs)  # noqa: S602
     with state.procs_lock:
         state.procs.add(proc)
     try:

@@ -1,7 +1,7 @@
 # cronrun
 
-[English README](README.md)
-[仕様書](SPEC.ja.md)
+[English README](https://github.com/tanakamasayuki/cronrun/blob/main/README.md)
+[仕様書](https://github.com/tanakamasayuki/cronrun/blob/main/SPEC.ja.md)
 
 `cronrun` は、指定したコマンドを次のいずれかで実行するCLIツールです。
 
@@ -94,4 +94,3 @@ cronrun --loop flock -n /tmp/worker.lock php worker.php
 
 - エラーメッセージは `stderr` に `error: <message>` 形式で出力
 - crontab ファイル管理、常駐化、ジョブ履歴、ログ管理は対象外
-
