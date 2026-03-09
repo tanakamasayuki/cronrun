@@ -112,6 +112,22 @@ cronrun --loop flock -n /tmp/worker.lock php worker.php
 - `0`: 正常終了（`--help`、`--version`、シグナルでの正常停止）
 - `1`: 入力/検証エラー（cron式不正、コマンド不足、引数不正）
 
+## 時間加速試験（`faketime`）
+
+`faketime` は `--exclude-monotonic` なしで実行してください。
+
+```bash
+# cron モード（壁時計を10倍加速）
+faketime -f "+0 x10" uv run --no-sync cronrun --log "* * * * * date"
+
+# loop モード
+faketime -f "+0 x10" uv run --no-sync cronrun --log --loop "date; sleep 2"
+```
+
+補足:
+- ローカルで繰り返し試験する場合は `uv run --no-sync` を使うと再インストールのノイズを減らせます。
+- `--exclude-monotonic` を付けると待機が実時間寄りになり、挙動が変わる場合があります。
+
 ## 補足
 
 - エラーメッセージは `stderr` に `error: <message>` 形式で出力

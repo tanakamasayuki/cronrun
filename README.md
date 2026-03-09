@@ -112,6 +112,22 @@ Enable runtime logs with `--log`.
 - `0`: normal exit (`--help`, `--version`, or graceful stop by signal)
 - `1`: input or validation errors (invalid cron, missing command, invalid arguments)
 
+## Time Acceleration Test (`faketime`)
+
+Use `faketime` without `--exclude-monotonic`.
+
+```bash
+# cron mode (x10 accelerated wall-clock)
+faketime -f "+0 x10" uv run --no-sync cronrun --log "* * * * * date"
+
+# loop mode
+faketime -f "+0 x10" uv run --no-sync cronrun --log --loop "date; sleep 2"
+```
+
+Notes:
+- `uv run --no-sync` avoids reinstall noise during repeated local tests.
+- If you use `--exclude-monotonic`, waits may follow real-time and the behavior can differ.
+
 ## Notes
 
 - Error messages are emitted to `stderr` as `error: <message>`

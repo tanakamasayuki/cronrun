@@ -7,6 +7,7 @@ import signal
 import subprocess
 import sys
 import threading
+import time
 from datetime import datetime
 from typing import Sequence
 
@@ -122,10 +123,15 @@ def parse_crontab_line(line: str) -> tuple[str, str]:
     return expr, command
 
 
-def wait_or_stop(state: RuntimeState, seconds: float) -> bool:
-    if seconds <= 0:
-        return not state.stop_event.is_set()
-    return not state.stop_event.wait(timeout=seconds)
+def wait_until_or_stop(state: RuntimeState, deadline: datetime) -> bool:
+    # Keep waiting logic simple: sleep for the remaining wall-clock duration.
+    # SIGINT/SIGTERM interrupts sleep and sets stop_event via handler.
+    while not state.stop_event.is_set():
+        remaining = (deadline - datetime.now()).total_seconds()
+        if remaining <= 0:
+            return True
+        time.sleep(remaining)
+    return False
 
 
 def run_process(
@@ -174,10 +180,11 @@ def join_all_threads(state: RuntimeState) -> None:
 
 def run_cron_mode(state: RuntimeState, crontab_line: str) -> int:
     expr, command = parse_crontab_line(crontab_line)
-    iterator = croniter(expr, datetime.now())
     while not state.stop_event.is_set():
-        next_run = iterator.get_next(datetime)
-        sleep_seconds = (next_run - datetime.now()).total_seconds()
+        now = datetime.now()
+        # Coalesce missed schedules by always selecting the next future tick from "now".
+        next_run = croniter(expr, now).get_next(datetime)
+        sleep_seconds = (next_run - now).total_seconds()
         log_event(
             state,
             "cron.next",
@@ -185,7 +192,7 @@ def run_cron_mode(state: RuntimeState, crontab_line: str) -> int:
             next_run=next_run.astimezone().isoformat(timespec="seconds"),
             wait_seconds=max(0, int(sleep_seconds)),
         )
-        if not wait_or_stop(state, sleep_seconds):
+        if not wait_until_or_stop(state, next_run):
             break
         run_id = allocate_run_id(state)
         thread = threading.Thread(
