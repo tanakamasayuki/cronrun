@@ -7,6 +7,7 @@
 
 - cron モード: `cronrun "<CRONTAB_LINE>"`
 - loop モード: `cronrun --loop <command> [args...]`
+- ログ出力: `--log` を付与
 
 常駐デーモンではなく、`cronrun` 実行中のみスケジュールを管理します。
 
@@ -27,6 +28,9 @@ cronrun --loop /bin/echo hello
 
 # loop モードでシェル式を実行
 cronrun --loop "date; sleep 2"
+
+# ログ付き
+cronrun --log "* * * * * echo hello"
 ```
 
 ## 使い方
@@ -34,7 +38,7 @@ cronrun --loop "date; sleep 2"
 ### cron モード
 
 ```bash
-cronrun "<minute> <hour> <day-of-month> <month> <day-of-week> <command> [args...]"
+cronrun [--log] "<minute> <hour> <day-of-month> <month> <day-of-week> <command> [args...]"
 ```
 
 - 先頭5フィールドを cron 式として解釈します
@@ -52,7 +56,7 @@ cronrun "* * * * * flock -n /tmp/worker.lock php worker.php"
 ### loop モード
 
 ```bash
-cronrun --loop <command> [args...]
+cronrun [--log] --loop <command> [args...]
 ```
 
 - `実行 -> 終了待ち -> 再実行` を繰り返します
@@ -78,6 +82,24 @@ cronrun --loop flock -n /tmp/worker.lock php worker.php
 - 終了後にプロセス終了
 
 実行中の子プロセスがなければ即時終了します。
+
+## ログ出力（`--log`）
+
+`--log` を付けると実行時ログを出力します。
+
+- ログ出力先は `stderr`
+- タイムスタンプはローカルタイムゾーンの ISO 8601
+- `cron` モードで出るログ:
+  - `cron.next`（次回実行予定）
+  - `run.start`
+  - `run.done`（実行時間・終了コード）
+- `loop` モードで出るログ:
+  - `run.start`
+  - `run.done`（実行時間・終了コード）
+- `SIGINT` / `SIGTERM` 受信時:
+  - `signal.received`
+  - `shutdown.waiting`（実行中ジョブがある場合のみ）
+  - `shutdown.complete`
 
 ## タイムゾーン / DST
 

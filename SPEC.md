@@ -169,6 +169,7 @@ If the process is stopped normally by `SIGINT` / `SIGTERM` after startup, exit c
 
 - `--help`: show usage and exit with code `0`
 - `--version`: show version string and exit with code `0`
+- `--log`: enable runtime logs to standard error output
 
 ------------------------------------------------------------------------
 
@@ -177,6 +178,25 @@ If the process is stopped normally by `SIGINT` / `SIGTERM` after startup, exit c
 - Print error messages to standard error output
 - Error messages are written in English
 - Format is `error: <message>`
+
+------------------------------------------------------------------------
+
+# Logging (`--log`)
+
+When `--log` is specified, output runtime logs to standard error output.
+
+- Timestamp format: ISO 8601 in local timezone
+- `cron` mode:
+    - `cron.next`: before waiting for next scheduled execution
+    - `run.start`: when a child process starts
+    - `run.done`: when a child process exits (include duration and exit code)
+- `loop` mode:
+    - `run.start`
+    - `run.done` (include duration and exit code)
+- On `SIGINT` / `SIGTERM`:
+    - `signal.received`
+    - `shutdown.waiting` (only if at least one child process is running)
+    - `shutdown.complete` (when shutdown processing is fully complete)
 
 ------------------------------------------------------------------------
 

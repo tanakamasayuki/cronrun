@@ -1,6 +1,8 @@
 # Changelog / 変更履歴
 
 ## Unreleased
+- (EN) Added `--log` option for runtime events (`cron.next`, `run.start`, `run.done`, signal/shutdown logs).
+- (JA) 実行時イベント（`cron.next`、`run.start`、`run.done`、シグナル/終了ログ）を出力する `--log` オプションを追加。
 
 ## 1.0.1
 - (EN) Fixed SIGINT handling so running child processes can finish before exit.

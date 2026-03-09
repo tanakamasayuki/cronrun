@@ -7,6 +7,7 @@
 
 - cron mode: `cronrun "<CRONTAB_LINE>"`
 - loop mode: `cronrun --loop <command> [args...]`
+- optional logging: add `--log`
 
 It is a foreground process (not a daemon): schedules exist only while `cronrun` is running.
 
@@ -27,6 +28,9 @@ cronrun --loop /bin/echo hello
 
 # loop mode with shell expression
 cronrun --loop "date; sleep 2"
+
+# with logs
+cronrun --log "* * * * * echo hello"
 ```
 
 ## Usage
@@ -34,7 +38,7 @@ cronrun --loop "date; sleep 2"
 ### cron mode
 
 ```bash
-cronrun "<minute> <hour> <day-of-month> <month> <day-of-week> <command> [args...]"
+cronrun [--log] "<minute> <hour> <day-of-month> <month> <day-of-week> <command> [args...]"
 ```
 
 - The first 5 fields are parsed as the cron expression
@@ -52,7 +56,7 @@ cronrun "* * * * * flock -n /tmp/worker.lock php worker.php"
 ### loop mode
 
 ```bash
-cronrun --loop <command> [args...]
+cronrun [--log] --loop <command> [args...]
 ```
 
 - Repeats: `run -> wait -> run again`
@@ -78,6 +82,24 @@ On `SIGINT` (`Ctrl+C`) or `SIGTERM`:
 - Exit after they finish
 
 If no child process is running, it exits immediately.
+
+## Logging (`--log`)
+
+Enable runtime logs with `--log`.
+
+- Logs are written to `stderr`
+- Timestamps use local timezone (ISO 8601)
+- `cron` mode logs:
+  - `cron.next` (next scheduled run time)
+  - `run.start`
+  - `run.done` (duration and exit code)
+- `loop` mode logs:
+  - `run.start`
+  - `run.done` (duration and exit code)
+- On `SIGINT` / `SIGTERM`:
+  - `signal.received`
+  - `shutdown.waiting` (only when running jobs exist)
+  - `shutdown.complete`
 
 ## Timezone and DST
 
