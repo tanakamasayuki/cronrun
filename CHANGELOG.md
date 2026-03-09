@@ -1,6 +1,8 @@
 # Changelog / 変更履歴
 
 ## Unreleased
+
+## 1.0.3
 - (EN) Changed cron wait logic to wall-clock `sleep(remaining)` style to improve time-acceleration tests with `faketime`.
 - (JA) `faketime` での時間加速試験を安定させるため、cron待機ロジックを壁時計ベースの `sleep(remaining)` 方式に変更。
 - (EN) Changed cron scheduling loop to coalesce missed ticks by recalculating the next future run from current time.
