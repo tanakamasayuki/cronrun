@@ -1,6 +1,8 @@
 # Changelog / 変更履歴
 
 ## Unreleased
+
+## 1.0.2
 - (EN) Added `--log` option for runtime events (`cron.next`, `run.start`, `run.done`, signal/shutdown logs).
 - (JA) 実行時イベント（`cron.next`、`run.start`、`run.done`、シグナル/終了ログ）を出力する `--log` オプションを追加。
 
